@@ -47,6 +47,7 @@
       <DependentUpon>HomepageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\HomePageViewModel.cs" />
+    <Compile Include="Models\GetLocationModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Geolocator.Abstractions">

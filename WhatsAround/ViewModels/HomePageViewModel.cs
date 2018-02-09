@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
+using WhatsAround.Models;
 
 namespace WhatsAround.Views
 {
@@ -24,8 +25,6 @@ namespace WhatsAround.Views
             }
         }
 
-        private Position position;
-
         #endregion
 
         public HomePageViewModel()
@@ -35,9 +34,9 @@ namespace WhatsAround.Views
 
         private async Task GetLocation()
         {
-            var currentLocation = CrossGeolocator.Current;
-            currentLocation.DesiredAccuracy = 25;
-            position = await currentLocation.GetPositionAsync(TimeSpan.FromSeconds(20), null, true);
+            var position = new GetLocationModel;
+            position.Execute();
+
             HomepageLabel = string.Format("this is your current location {0} , {1}", position.Latitude, position.Longitude);
         }
 

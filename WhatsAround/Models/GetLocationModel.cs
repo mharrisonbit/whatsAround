@@ -9,16 +9,17 @@ namespace WhatsAround.Models
     {
         private static Position position;
 
-        public Task Execute()
+        public Position Execute()
         {
             await GetLocationAsync();
         }
 
-        private static async Task GetLocationAsync()
+        private async Position GetLocationAsync()
         {
             var location = CrossGeolocator.Current;
             location.DesiredAccuracy = 25;
             position = await location.GetPositionAsync(TimeSpan.FromSeconds(20), null, true);
+            return position;
         }
     }
 }

@@ -5,6 +5,8 @@
             HorizontalOptions="CenterAndExpand"
             VerticalOptions="CenterAndExpand">
             <Label Text="{Binding HomepageLabel}"></Label>
+            <Label Text="{Binding SpeedLabelCommand"></Label>
+            <Button Command="{Binding GroundSpeedCommand">Get your speed</Button>
         </StackLayout>
 	</ContentPage.Content>
 </ContentPage>

@@ -15,6 +15,8 @@ namespace WhatsAround.Views
 #region parameters and variables
 
         string homepageLabel;
+        public Position locationAndSpeed;
+
         public string HomepageLabel
         {
             get { return homepageLabel; }
@@ -24,6 +26,11 @@ namespace WhatsAround.Views
                 OnPropertyChanged();
             }
         }
+
+        public double CurrentGroundSpeed;
+        public double currentGroundSpeed { get; private set; }
+
+
 
         #endregion
 
@@ -35,9 +42,14 @@ namespace WhatsAround.Views
         private async Task GetLocation()
         {
             var position = new GetLocationModel;
-            position.Execute();
+            locationAndSpeed = position.Execute();
 
-            HomepageLabel = string.Format("this is your current location {0} , {1}", position.Latitude, position.Longitude);
+            HomepageLabel = string.Format("this is your current location {0} , {1}", locationAndSpeed.Latitude, locationAndSpeed.Longitude);
+        }
+
+        public async Task GetGroundSpeed()
+        {
+            currentGroundSpeed = locationAndSpeed.Speed
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

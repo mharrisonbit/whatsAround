@@ -4,9 +4,9 @@
         <StackLayout
             HorizontalOptions="CenterAndExpand"
             VerticalOptions="CenterAndExpand">
-            <Label Text="{Binding HomepageLabel}"></Label>
-            <Label Text="{Binding SpeedLabelCommand"></Label>
-            <Button Command="{Binding GroundSpeedCommand">Get your speed</Button>
+            <Label Text="{Binding LocationLabel}"></Label>
+            <Label Text="{Binding SpeedSpeedLabel}"></Label>
+            <Button IsVisible="true" Command="{Binding GroundSpeedCommand}">Get your speed</Button>
         </StackLayout>
 	</ContentPage.Content>
 </ContentPage>

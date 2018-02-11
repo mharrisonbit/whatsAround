@@ -1,24 +1,21 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Plugin.Geolocator.Abstractions;
 using WhatsAround.Models;
 using Xamarin.Forms;
 
 namespace WhatsAround.Views
 {
-    internal class HomePageViewModel : INotifyPropertyChanged
+    public class HomePageViewModel : INotifyPropertyChanged
     {
 		public event PropertyChangedEventHandler PropertyChanged;
 
 #region parameters and variables
 
-        string homepageLabel;
-        public Position locationAndSpeed;
-
-        string LocationLabel;
-        public string locationLabel
+        string locationLabel;
+        public string LocationLabel
         {
             get { return locationLabel; }
             set
@@ -39,44 +36,58 @@ namespace WhatsAround.Views
             }
         }
 
+#endregion
+
+#region commands
+
         public Command GroundSpeedCommand
         {
             get
             {
                 return new Command(async () =>
                 {
-                    GetLocation();
+                    await GetLocation();
+                    await GetGroundSpeed();
                 });
             }
         }
 
-
-        #endregion
+#endregion
 
         public HomePageViewModel()
 		{
             Debug.WriteLine("this fired");
 		}
 
+#region methods
+
         private async Task GetLocation()
         {
-            var position = new GetLocationModel();
-            var gpsReturn = await position.Execute();
-            locationLabel = "gps location is " + gpsReturn.Latitude + " , " + gpsReturn.Longitude;
-
-
+            try
+            {
+				var position = new GetLocationModel();
+				var gpsReturn = await position.Execute();
+                LocationLabel = "gps location is" + Environment.NewLine + gpsReturn.Latitude + Environment.NewLine + gpsReturn.Longitude;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(string.Format("ERROR... HomePageViewModel:GetLocation() {0}", ex));
+            }
         }
 
         private async Task GetGroundSpeed()
         {
             var position = new GetLocationModel();
             var gpsReturn = await position.Execute();
-            speedSpeedLabel = gpsReturn.Speed.ToString();
+            SpeedSpeedLabel = "Your ground speed is " + gpsReturn.Speed.ToString();
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+#endregion
+
     }
 }

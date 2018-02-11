@@ -6,7 +6,8 @@
             VerticalOptions="CenterAndExpand">
             <Label Text="{Binding LocationLabel}"></Label>
             <Label Text="{Binding SpeedSpeedLabel}"></Label>
-            <Button IsVisible="true" Command="{Binding GroundSpeedCommand}" Text="Get your location and speed"></Button>
+            <ActivityIndicator  Color="Red" IsRunning="{Binding GpsIndicatorStatus}"></ActivityIndicator>
+            <Button IsEnabled="{Binding GpsButtonEnable}" Command="{Binding GroundSpeedCommand}" Text="{Binding GpsButtonText}"></Button>
         </StackLayout>
 	</ContentPage.Content>
 </ContentPage>

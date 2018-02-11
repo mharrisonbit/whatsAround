@@ -36,9 +36,42 @@ namespace WhatsAround.Views
             }
         }
 
-#endregion
+        bool gpsIndicatorStatus;
+        public bool GpsIndicatorStatus
+        {
+            get { return gpsIndicatorStatus; }
+            set
+            {
+                gpsIndicatorStatus = value;
+                OnPropertyChanged();
+            }
+        }
 
-#region commands
+        string gpsButtonText;
+        public string GpsButtonText
+        {
+            get { return gpsButtonText; }
+            set
+            {
+                gpsButtonText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        bool gpsButtonEnable;
+        public bool GpsButtonEnable
+        {
+            get { return gpsButtonEnable; }
+            set
+            {
+                gpsButtonEnable = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region commands
 
         public Command GroundSpeedCommand
         {
@@ -56,7 +89,9 @@ namespace WhatsAround.Views
 
         public HomePageViewModel()
 		{
-            Debug.WriteLine("this fired");
+            GpsButtonEnable = true;
+            GpsIndicatorStatus = false;
+            GpsButtonText = "Get your location and ground speed.";
 		}
 
 #region methods
@@ -65,6 +100,9 @@ namespace WhatsAround.Views
         {
             try
             {
+                GpsButtonEnable = false;
+                GpsButtonText = "Getting location";
+                GpsIndicatorStatus = true;
 				var position = new GetLocationModel();
 				var gpsReturn = await position.Execute();
                 LocationLabel = "gps location is" + Environment.NewLine + gpsReturn.Latitude + Environment.NewLine + gpsReturn.Longitude;
@@ -77,9 +115,20 @@ namespace WhatsAround.Views
 
         private async Task GetGroundSpeed()
         {
-            var position = new GetLocationModel();
-            var gpsReturn = await position.Execute();
-            SpeedSpeedLabel = "Your ground speed is " + gpsReturn.Speed.ToString();
+            try
+            {
+                GpsButtonText = "Getting your ground speed.";
+				var position = new GetLocationModel();
+				var gpsReturn = await position.Execute();
+				SpeedSpeedLabel = "Your ground speed is " + gpsReturn.Speed.ToString();
+                GpsIndicatorStatus = false;
+                GpsButtonText = "Get your location and ground speed.";
+                GpsButtonEnable = true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(string.Format("ERROR... HomePageViewModel:GetGroundSPeed() {0}", ex));
+            }
         }
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

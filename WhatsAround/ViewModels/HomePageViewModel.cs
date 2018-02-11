@@ -1,10 +1,10 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using WhatsAround.Models;
+using Xamarin.Forms;
 
 namespace WhatsAround.Views
 {
@@ -15,29 +15,63 @@ namespace WhatsAround.Views
 #region parameters and variables
 
         string homepageLabel;
-        public string HomepageLabel
+        public Position locationAndSpeed;
+
+        string LocationLabel;
+        public string locationLabel
         {
-            get { return homepageLabel; }
+            get { return locationLabel; }
             set
             {
-                homepageLabel = value;
+                locationLabel = value;
                 OnPropertyChanged();
             }
         }
+
+        string speedSpeedLabel;
+        public string SpeedSpeedLabel 
+        {
+            get { return speedSpeedLabel; }
+            set
+            {
+                speedSpeedLabel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Command GroundSpeedCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    GetLocation();
+                });
+            }
+        }
+
 
         #endregion
 
         public HomePageViewModel()
 		{
-            GetLocation();
+            Debug.WriteLine("this fired");
 		}
 
         private async Task GetLocation()
         {
-            var position = new GetLocationModel;
-            position.Execute();
+            var position = new GetLocationModel();
+            var gpsReturn = await position.Execute();
+            locationLabel = "gps location is " + gpsReturn.Latitude + " , " + gpsReturn.Longitude;
 
-            HomepageLabel = string.Format("this is your current location {0} , {1}", position.Latitude, position.Longitude);
+
+        }
+
+        private async Task GetGroundSpeed()
+        {
+            var position = new GetLocationModel();
+            var gpsReturn = await position.Execute();
+            speedSpeedLabel = gpsReturn.Speed.ToString();
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

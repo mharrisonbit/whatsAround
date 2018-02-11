@@ -8,11 +8,17 @@ namespace WhatsAround.Models
     public class GetLocationModel
     {
 
+#region public methods
+
         public Task<Position> Execute()
         {
             var test = GetLocationAsync();
             return test;
         }
+
+#endregion
+
+#region private methods
 
         private async Task<Position> GetLocationAsync()
         {
@@ -21,5 +27,7 @@ namespace WhatsAround.Models
             var position = await location.GetPositionAsync(TimeSpan.FromSeconds(20), null, true);
             return position;
         }
+
+#endregion
     }
 }
